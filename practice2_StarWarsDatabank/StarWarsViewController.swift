@@ -23,7 +23,8 @@ class StarWarsViewController: UIViewController {
         getInfoFromUrl()
         setUpSearchBar()
     }
-
+    
+    //MARK: get info from api
     func getInfoFromUrl (){
         guard let url = URL(string: urlString) else { return }
         URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) -> Void in
@@ -42,6 +43,7 @@ class StarWarsViewController: UIViewController {
     
 }
 
+//MARK: for save info about characters
 struct Characters: Codable {
     let results: [Character]
 }
