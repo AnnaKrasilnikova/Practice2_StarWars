@@ -27,18 +27,31 @@ class StarWarsViewController: UIViewController {
     //MARK: get info from api
     func getInfoFromUrl (){
         guard let url = URL(string: urlString) else { return }
-        URLSession.shared.dataTask(with: url, completionHandler: {(data, response, error) -> Void in
+        var downoadTask = URLRequest(url: url, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 20)
+        downoadTask.httpMethod = "GET"
+        URLSession.shared.dataTask(with: downoadTask , completionHandler: {(data, response, error ) -> Void in
             guard let data = data else { return }
             let character = try! JSONDecoder().decode(Characters.self, from: data)
             for i in 0..<character.results.count{
                 self.characterNamesArray.append(character.results[i].name)
             }
+            if let error = error {
+                self.getAlert(error: error)
+                return
+            }
         }).resume()
         currentCharacterNamesArray = characterNamesArray
         tableView.reloadData()
     }
-
-    @IBAction func characterButtonTab(_ sender: Any) {
+    
+    func getAlert(error: Error){
+        let alert = UIAlertController(title: "Error!",
+                                      message: error.localizedDescription,
+                                      preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok",
+                                         style: .cancel)
+        alert.addAction(okAction)
+        present(alert, animated: true)
     }
     
 }
@@ -105,3 +118,5 @@ extension StarWarsViewController: UITableViewDelegate {
         return 50
     }
 }
+
+

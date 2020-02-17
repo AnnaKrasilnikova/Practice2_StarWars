@@ -9,7 +9,6 @@
 import UIKit
 
 class CharacterViewController: UIViewController {
-    
     @IBOutlet weak var heightLabel: UILabel!
     @IBOutlet weak var characterNameLabel: UIView!
     @IBOutlet weak var massLabel: UILabel!
